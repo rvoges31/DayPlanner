@@ -5,10 +5,10 @@ var workHrs = [7,8,9,10,11,12,13,14,15,16,17,18];
 var currentHr = moment().hour();
 
 function startPlanner () {
-    for (let i = 0 ; i < workHrs.length ; i++) {
-        var getText = localStorage.getItem("text" + i);
+    for (i = 0 ; i < workHrs.length ; i++) {
+        var getText = localStorage.getItem("textA" + i);
         var row = $("<div class = 'row'>");
-        var col1 = $("<div class = çol-md-3 text-center'>");
+        var col1 = $("<div class = 'col-sm-3 text-left'>");
         var midday = " AM";
         if (workHrs[i]> 12) {
             midday = " PM";
@@ -19,28 +19,28 @@ function startPlanner () {
         }
         col1.html(normalHrs + midday);
 
-        var col2 = $("<div class = 'col-md-6'>");
+        var col2 = $("<div class = 'col-sm-6'>");
 
-        var text = $("<text style='width:100%'>");
-        text.attr("id", "text" + i);
+        var textA = $("<text style='width:100%'>");
+        textA.attr("id", "textA" + i);
         // Define colour of hours current before and after, current is green, past is grey, future is yellow
-        var colour = "bg-success";
+        var color = "bg-success";
 
         if (workHrs[i] > currentHr) {
-            colour = "bg-warning";
+            color = "bg-warning";
         }
         
         if (workHrs[i] < currentHr) {
-            colour = "bg-info";
+            color = "bg-info";
         }
 
-        text.attr("class", colour);
-        text.val(getText);
-        col2.append(text);
+        textA.attr("class", color);
+        textA.val(getText);
+        col2.append(textA);
 
-        var col3 = $("<div class = 'col-md-3'>");
+        var col3 = $("<div class = 'col-sm-3'>");
         var btn = $("<button class='btn btn-dark save'>");
-        btn.text("save");
+        btn.text("Save");
         col3.append(btn);
 
         row.append(col1, col2, col3);
@@ -51,3 +51,9 @@ function startPlanner () {
 }
 
 startPlanner();
+
+$(".save").on("click", function() {
+    for (i = 0; i < workHrs.length; i++);
+    var textInput = $("#textA" + i).val();
+    localStorage.setItem("textA" + i, textInput);
+})
