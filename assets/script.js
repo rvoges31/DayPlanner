@@ -1,62 +1,77 @@
-// Define work hour variables from 7 am to 6pm
+//define variables
+var appointment = "";
+var scheduleTime = "";
+var currentDate;
+var currentTime;
+var currentC;
+var tempArray = [];
+var returnedToDos;
+var returnedAppointments;
 
-var workHrs = [7,8,9,10,11,12,13,14,15,16,17,18];
 
-var currentDate = moment().format("dddd, MMMM Do YYYY");
-$(".date").html(currentDate);
-var currentHr = moment().hour();
+$(window).on("load", function() {
+    currentDate = moment().format("dddd MMM Do YYYY");
+    $("#date").append(currentDate);
+    currentTime = moment().format("H");
 
-function startPlanner () {
-    for (i = 0 ; i < workHrs.length ; i++) {
-        var getText = localStorage.getItem("textA" + i);
-        var row = $("<div class = 'row'>");
-        var col1 = $("<div class = 'col-lg-1 text-left'>");
-        var midday = " AM";
-        if (workHrs[i]> 12) {
-            midday = " PM";
+    function renderAppointments() {
+        returnedToDos = JSON.parse(localStorage.getItem("appointments"));
+        if (returnedToDos !== null) {
+            for (i=0;i<returnedToDos.length;i++) {
+                returnedAppointments = returnedToDos[i];
+                details = returnedAppointments.details;
+                timeIndex = returnedAppointments.time;
+                timeIndex = timeIndex.replace(":00", '');
+                if (details !== null) {
+                    $("#" + timeIndex).children('div').children('div').children('textarea').val(details);
+
+                }
+            }
         }
-        var normalHrs = workHrs[i];
-        if (normalHrs > 12) {
-            normalHrs = normalHrs - 12;
+    }
+
+
+    renderAppointments()
+
+    for (i = 0; i <= 23; i++) {
+        CurrentC = i;
+        if (currentTime == i) {
+            $('#' + CurrentC).addClass("present");
+            $('#' + CurrentC).children('div').children('div').children("textarea").addClass("present");
         }
-        col1.html(normalHrs + midday);
-
-        var col2 = $("<div class = 'col-lg-10'>");
-
-        var textA = $("<p>");
-        textA.attr("id", "textA" + i);
-        // Define colour of hours current before and after, current is green, past is grey, future is yellow
-        var colour = "bg-success";
-
-        if (workHrs[i] > currentHr) {
-            colour = "bg-warning";
+        else if (currentTime > i) {
+            $('#' + CurrentC).addClass("past");
+            $('#' + CurrentC).children('div').children('div').children("textarea").addClass("past");
         }
-        
-        if (workHrs[i] < currentHr) {
-            colour = "bg-info";
+        else {
+            $('#' + CurrentC).addClass("future");
+            $('#' + CurrentC).children('div').children('div').children("textarea").addClass("future");
         }
+    }
+})
 
-        textA.attr("class", colour);
-        textA.val(getText);
-        col2.append(textA);
 
-        var col3 = $("<div class = 'col-lg-1'>");
-        var btn = $("<button class='btn btn-dark save'>");
-        btn.text("Save");
-        col3.append(btn);
 
-        row.append(col1, col2, col3);
 
-        $("#planner").append(row);
+
+
+$(".saveBtn").click(function () {
+    appointment = $(this).parent('div').children('div').children('textarea').val();
+    scheduleTime = $(this).parent('div').parent().attr("id");
+    appointment = {
+        time: scheduleTime,
+        details: appointment
+    }
+    tempArray = JSON.parse(localStorage.getItem("appointments"));
+    if (tempArray === null) {
+        localStorage.setItem('appointments', JSON.stringify([{ time: scheduleTime, details: appointment }]));
+    }
+    else {
+        tempArray.push(appointment);
+        localStorage.setItem("appointments", JSON.stringify(tempArray));
+
 
     }
-}
-
-startPlanner();
-
-$(".save").on("click", function() {
-    for (i = 0; i < workHrs.length; i++) {
-        var textInput = $("#textA" + i).val();
-        localStorage.setItem("textA" + i, textInput);
-    }
+    $(this).parent('div').children('div').children('textarea').replaceWith($('<textarea>' + appointment.addClass("textarea") + '</textarea>'));
 });
+
