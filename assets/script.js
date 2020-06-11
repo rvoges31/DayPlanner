@@ -33,7 +33,7 @@ $(window).on("load", function() {
 
     renderAppointments()
 
-    for (i = 0; i <= 23; i++) {
+    for (i = 0; i < 24; i++) {
         CurrentC = i;
         if (currentTime == i) {
             $('#' + CurrentC).addClass("present");
