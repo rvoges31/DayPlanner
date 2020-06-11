@@ -30,7 +30,6 @@ $(window).on("load", function() {
         }
     }
 
-
     renderAppointments()
 
     for (i = 0; i < 24; i++) {
@@ -50,11 +49,6 @@ $(window).on("load", function() {
     }
 })
 
-
-
-
-
-
 $(".saveBtn").click(function () {
     appointment = $(this).parent('div').children('div').children('textarea').val();
     scheduleTime = $(this).parent('div').parent().attr("id");
@@ -69,7 +63,6 @@ $(".saveBtn").click(function () {
     else {
         tempArray.push(appointment);
         localStorage.setItem("appointments", JSON.stringify(tempArray));
-
 
     }
     $(this).parent('div').children('div').children('textarea').replaceWith($('<textarea>' + appointment.addClass("textarea") + '</textarea>'));
