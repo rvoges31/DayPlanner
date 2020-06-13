@@ -52,6 +52,7 @@ $(window).on("load", function() {
     }
 });
 
+// On click event for save button
 $(".saveBtn").click(function () {
     appointment = $(this).parent('div').children('div').children('textarea').val();
     scheduleTime = $(this).parent('div').parent().attr("id");
