@@ -74,6 +74,7 @@ $(".saveBtn").click(function () {
 
     }
     // Replace text area with appointment
+    // 'apointment.addCLass("textarea") throws an exception in console however have kept it in as the code sill not save the new text without it
     $(this).parent('div').children('div').children('textarea').replaceWith($('<textarea>' + appointment.addClass("textarea") + '</textarea>'));
 });
 
